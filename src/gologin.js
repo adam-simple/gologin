@@ -819,7 +819,7 @@ export class GoLogin {
     env.TZ = tz;
 
     if (this.vnc_port) {
-      const script_path = _resolve(__dirname, './run.sh');
+      const script_path = _resolve(__dirname, '../run.sh');
       debug('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port);
       execFile(
         script_path,
