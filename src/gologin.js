@@ -1,5 +1,5 @@
 import { exec as execNonPromise, execFile, spawn } from 'child_process';
-import debug from 'debug';
+var debug = require('debug')('gologin')
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
 import { existsSync, mkdirSync, promises as _promises } from 'fs';
