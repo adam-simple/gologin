@@ -1,5 +1,5 @@
 import { exec as execNonPromise, execFile, spawn } from 'child_process';
-var debug = require('debug')('gologin')
+import debug from 'debug';
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
 import { existsSync, mkdirSync, promises as _promises } from 'fs';
@@ -32,6 +32,8 @@ const OS_PLATFORM = process.platform;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const logger = debug('gologin')
 
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
@@ -77,6 +79,7 @@ export class GoLogin {
     this.cookiesFilePath = join(this.tmpdir, `gologin_profile_${this.profile_id}`, 'Default', 'Network', 'Cookies');
     this.profile_zip_path = join(this.tmpdir, `gologin_${this.profile_id}.zip`);
     debug('INIT GOLOGIN', this.profile_id);
+    logger("INIT");
   }
 
   async checkBrowser() {
@@ -889,7 +892,7 @@ export class GoLogin {
       const child = execFile(ORBITA_BROWSER, params, { env });
       // const child = spawn(ORBITA_BROWSER, params, { env, shell: true });
       child.stdout.on('data', (data) => debug(data.toString()));
-      debug('SPAWN CMD', ORBITA_BROWSER, params.join(' '));
+      logger('SPAWN CMD', ORBITA_BROWSER, params.join(' '));
     }
 
     if (this.waitWebsocket) {
