@@ -793,7 +793,7 @@ export class GoLogin {
   async spawnBrowser() {
     let { remote_debugging_port } = this;
     if (!remote_debugging_port) {
-      remote_debugging_port = 0;
+      remote_debugging_port = await this.getRandomPort();
     }
 
     const profile_path = this.profilePath();
