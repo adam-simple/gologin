@@ -822,10 +822,10 @@ export class GoLogin {
 
     if (this.vnc_port) {
       const script_path = _resolve(__dirname, '../run.sh');
-      logger('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port);
+      logger('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz);
       execFile(
         script_path,
-        [ORBITA_BROWSER, proxy, profile_path, this.vnc_port, tz],
+        [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
         { env },
       );
     } else {
