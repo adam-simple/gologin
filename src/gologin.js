@@ -79,7 +79,6 @@ export class GoLogin {
     this.cookiesFilePath = join(this.tmpdir, `gologin_profile_${this.profile_id}`, 'Default', 'Network', 'Cookies');
     this.profile_zip_path = join(this.tmpdir, `gologin_${this.profile_id}.zip`);
     debug('INIT GOLOGIN', this.profile_id);
-    logger("INIT");
   }
 
   async checkBrowser() {
@@ -889,10 +888,10 @@ export class GoLogin {
       }
 
       console.log(params);
+      logger('SPAWN CMD', ORBITA_BROWSER, params.join(' '));
       const child = execFile(ORBITA_BROWSER, params, { env });
       // const child = spawn(ORBITA_BROWSER, params, { env, shell: true });
       child.stdout.on('data', (data) => debug(data.toString()));
-      logger('SPAWN CMD', ORBITA_BROWSER, params.join(' '));
     }
 
     if (this.waitWebsocket) {
