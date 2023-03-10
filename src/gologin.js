@@ -890,7 +890,7 @@ export class GoLogin {
       }
 
       console.log(params);
-      const command = str(ORBITA_BROWSER).join(params.join(' '), ' ')
+      const command = ORBITA_BROWSER.toString().join(params.join(' '), ' ')
       logger('SPAWN CMD', command);
       return command
     }
