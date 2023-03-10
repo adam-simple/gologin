@@ -374,26 +374,26 @@ export class GoLogin {
       try {
         profile_folder = await this.getProfileS3(get(profile, 's3Path', ''));
       } catch (e) {
-        debug('Cannot get profile - using empty', e);
+        logger('Cannot get profile - using empty', e);
       }
 
-      debug('FILE READY', this.profile_zip_path);
+      logger('FILE READY', this.profile_zip_path);
       if (!profile_folder.length) {
         profile_folder = await this.emptyProfileFolder();
       }
 
       await writeFile(this.profile_zip_path, profile_folder);
 
-      debug('PROFILE LENGTH', profile_folder.length);
+      logger('PROFILE LENGTH', profile_folder.length);
     } else {
-      debug('PROFILE LOCAL HAVING', this.profile_zip_path);
+      logger('PROFILE LOCAL HAVING', this.profile_zip_path);
     }
 
-    debug('Cleaning up..', profilePath);
+    logger('Cleaning up..', profilePath);
 
     try {
       await this.extractProfile(profilePath, this.profile_zip_path);
-      debug('extraction done');
+      logger('extraction done');
     } catch (e) {
       console.trace(e);
       profile_folder = await this.emptyProfileFolder();
@@ -404,17 +404,17 @@ export class GoLogin {
     const singletonLockPath = join(profilePath, 'SingletonLock');
     const singletonLockExists = await access(singletonLockPath).then(() => true).catch(() => false);
     if (singletonLockExists) {
-      debug('removing SingletonLock');
+      logger('removing SingletonLock');
       await unlink(singletonLockPath);
-      debug('SingletonLock removed');
+      logger('SingletonLock removed');
     }
 
     const pref_file_name = join(profilePath, 'Default', 'Preferences');
-    debug('reading', pref_file_name);
+    logger('reading', pref_file_name);
 
     const prefFileExists = await access(pref_file_name).then(() => true).catch(() => false);
     if (!prefFileExists) {
-      debug('Preferences file not exists waiting', pref_file_name, '. Using empty profile');
+      logger('Preferences file not exists waiting', pref_file_name, '. Using empty profile');
       profile_folder = await this.emptyProfileFolder();
       await writeFile(this.profile_zip_path, profile_folder);
       await this.extractProfile(profilePath, this.profile_zip_path);
@@ -572,10 +572,10 @@ export class GoLogin {
 
     const gologin = this.convertPreferences(profile);
 
-    debug(`Writing profile for screenWidth ${profilePath}`, JSON.stringify(gologin));
+    logger(`Writing profile for screenWidth ${profilePath}`, JSON.stringify(gologin));
     gologin.screenWidth = this.resolution.width;
     gologin.screenHeight = this.resolution.height;
-    debug('writeCookesFromServer', this.writeCookesFromServer);
+    logger('writeCookesFromServer', this.writeCookesFromServer);
     if (this.writeCookesFromServer) {
       await this.writeCookiesToFile();
     }
@@ -606,7 +606,7 @@ export class GoLogin {
       gologin,
     })));
 
-    debug('Profile ready. Path: ', profilePath, 'PROXY', JSON.stringify(get(preferences, 'gologin.proxy')));
+    logger('Profile ready. Path: ', profilePath, 'PROXY', JSON.stringify(get(preferences, 'gologin.proxy')));
 
     return profilePath;
   }
@@ -808,7 +808,7 @@ export class GoLogin {
     this.port = remote_debugging_port;
 
     const ORBITA_BROWSER = this.executablePath || this.browserChecker.getOrbitaPath;
-    debug(`ORBITA_BROWSER=${ORBITA_BROWSER}`);
+    logger(`ORBITA_BROWSER=${ORBITA_BROWSER}`);
     const env = {};
     Object.keys(process.env).forEach((key) => {
       env[key] = process.env[key];
@@ -895,10 +895,10 @@ export class GoLogin {
     }
 
     if (this.waitWebsocket) {
-      debug('GETTING WS URL FROM BROWSER');
+      logger('GETTING WS URL FROM BROWSER');
       const data = await requests.get(`http://127.0.0.1:${remote_debugging_port}/json/version`, { json: true });
 
-      debug('WS IS', get(data, 'body.webSocketDebuggerUrl', ''));
+      logger('WS IS', get(data, 'body.webSocketDebuggerUrl', ''));
       this.is_active = true;
 
       return get(data, 'body.webSocketDebuggerUrl', '');
