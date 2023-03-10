@@ -823,11 +823,13 @@ export class GoLogin {
     if (this.vnc_port) {
       const script_path = _resolve(__dirname, '../run.sh');
       logger('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz);
-      execFile(
-        script_path,
-        [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
-        { env },
-      );
+      const command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
+      return command
+      // execFile(
+      //   script_path,
+      //   [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
+      //   { env },
+      // );
     } else {
       const [splittedLangs] = this.language.split(';');
       let [browserLang] = splittedLangs.split(',');
@@ -888,23 +890,10 @@ export class GoLogin {
       }
 
       console.log(params);
-      logger('SPAWN CMD', ORBITA_BROWSER, params.join(' '));
-      const child = execFile(ORBITA_BROWSER, params, { env });
-      // const child = spawn(ORBITA_BROWSER, params, { env, shell: true });
-      // child.stdout.on('data', (data) => debug(data.toString()));
+      const command = ORBITA_BROWSER.join(params.join(' '), ' ')
+      logger('SPAWN CMD', command);
+      return command
     }
-
-    if (this.waitWebsocket) {
-      logger('GETTING WS URL FROM BROWSER');
-      const data = await requests.get(`http://127.0.0.1:${remote_debugging_port}/json/version`, { json: true });
-
-      logger('WS IS', get(data, 'body.webSocketDebuggerUrl', ''));
-      this.is_active = true;
-
-      return get(data, 'body.webSocketDebuggerUrl', '');
-    }
-
-    return '';
   }
 
   async createStartupAndSpawnBrowser() {
@@ -1277,10 +1266,10 @@ export class GoLogin {
 
     await this.createStartup();
     // await this.createBrowserExtension();
-    const wsUrl = await this.spawnBrowser();
+    const command = await this.spawnBrowser();
     this.setActive(true);
 
-    return { status: 'success', wsUrl };
+    return { status: 'success', command };
   }
 
   async startLocal() {
