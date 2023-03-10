@@ -825,7 +825,7 @@ export class GoLogin {
       debug('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port);
       execFile(
         script_path,
-        [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
+        [ORBITA_BROWSER, proxy, profile_path, this.vnc_port, tz],
         { env },
       );
     } else {
