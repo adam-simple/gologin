@@ -793,7 +793,7 @@ export class GoLogin {
   async spawnBrowser() {
     let { remote_debugging_port } = this;
     if (!remote_debugging_port) {
-      remote_debugging_port = await this.getRandomPort();
+      remote_debugging_port = 0;
     }
 
     const profile_path = this.profilePath();
@@ -825,7 +825,7 @@ export class GoLogin {
       logger('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz);
       execFile(
         script_path,
-        [ORBITA_BROWSER, 0, proxy, profile_path, this.vnc_port, tz],
+        [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
         { env },
       );
     } else {
