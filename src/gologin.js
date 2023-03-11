@@ -822,7 +822,7 @@ export class GoLogin {
 
     if (this.vnc_port) {
       const script_path = _resolve(__dirname, '../run.sh');
-      let command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --disable-gpu --v=4 --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
+      let command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --enable-logging --disable-gpu --v=4 --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
       logger('ENV', { env })
       for (const key in env) {
         if (env.hasOwnProperty(key)) {
