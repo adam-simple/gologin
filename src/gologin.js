@@ -822,7 +822,12 @@ export class GoLogin {
 
     if (this.vnc_port) {
       const script_path = _resolve(__dirname, '../run.sh');
-      const command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --proxy-auth-user=${this.proxy.username} --proxy-auth-password=${this.proxy.password} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
+      const command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
+      for (const key in env) {
+        if (env.hasOwnProperty(key)) {
+          command = `${key}=${env[key]} ${command}`;
+        }
+      }
       logger('COMMAND', command)
       return command
       // execFile(
@@ -881,8 +886,6 @@ export class GoLogin {
         const hr_rules = `"MAP * 0.0.0.0 , EXCLUDE ${proxy_host}"`;
         params.push(`--proxy-server=${proxy}`);
         params.push(`--host-resolver-rules=${hr_rules}`);
-        params.push(`--proxy-auth-user=${this.proxy.username}`);
-        params.push(`--proxy-auth-password=${this.proxy.password}`);
       }
 
       if (Array.isArray(this.extra_params) && this.extra_params.length) {
@@ -897,6 +900,11 @@ export class GoLogin {
 
       console.log(params);
       const command = `${ORBITA_BROWSER} ${params.join(' ')}`
+      for (const key in env) {
+        if (env.hasOwnProperty(key)) {
+          command = `${key}=${env[key]} ${command}`;
+        }
+      }
       logger('SPAWN CMD', command);
       return command
     }
