@@ -889,6 +889,8 @@ export class GoLogin {
         params.push('--restore-last-session');
       }
 
+      logger('ENV', { env })
+
       console.log(params);
       const command = `${ORBITA_BROWSER} ${params.join(' ')}`
       logger('SPAWN CMD', command);
