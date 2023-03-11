@@ -830,7 +830,7 @@ export class GoLogin {
         }
       }
       logger('COMMAND', command)
-      return command, this.proxy.username, this.proxy.password
+      return { command: command, user: this.proxy.username, pass: this.proxy.password }
       // execFile(
       //   script_path,
       //   [ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz],
@@ -907,7 +907,7 @@ export class GoLogin {
         }
       }
       logger('SPAWN CMD', command);
-      return command, this.proxy.username, this.proxy.password
+      return { command: command, user: this.proxy.username, pass: this.proxy.password }
     }
   }
 
@@ -1281,10 +1281,10 @@ export class GoLogin {
 
     await this.createStartup();
     // await this.createBrowserExtension();
-    const { command, user, pass } = await this.spawnBrowser();
+    const { command: command, user: user, pass: pass } = await this.spawnBrowser();
     this.setActive(true);
 
-    return { status: 'success', command, user, pass };
+    return { status: 'success', command: command, user: user, pass: pass };
   }
 
   async startLocal() {
