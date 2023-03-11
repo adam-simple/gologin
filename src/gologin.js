@@ -822,8 +822,8 @@ export class GoLogin {
 
     if (this.vnc_port) {
       const script_path = _resolve(__dirname, '../run.sh');
-      logger('RUNNING', script_path, ORBITA_BROWSER, remote_debugging_port, proxy, profile_path, this.vnc_port, tz);
       const command = `DISPLAY=:${this.vnc_port} ${ORBITA_BROWSER} --no-sandbox --remote-debugging-port=${remote_debugging_port} --proxy-server=${proxy} --proxy-auth-user=${this.proxy.username} --proxy-auth-password=${this.proxy.password} --user-data-dir=${profile_path} --tz=${tz} --password-store=basic --lang=en --new-window`
+      logger('COMMAND', command)
       return command
       // execFile(
       //   script_path,
