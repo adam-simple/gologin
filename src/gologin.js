@@ -875,8 +875,9 @@ export class GoLogin {
         params.push(arg);
       }
 
+      logger('PROXY', this.proxy)
+
       if (proxy) {
-        logger('PROXY', proxy)
         const hr_rules = `"MAP * 0.0.0.0 , EXCLUDE ${proxy_host}"`;
         params.push(`--proxy-server=${proxy}`);
         params.push(`--host-resolver-rules=${hr_rules}`);
