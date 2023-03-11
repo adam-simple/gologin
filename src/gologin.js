@@ -826,7 +826,7 @@ export class GoLogin {
       logger('ENV', { env })
       for (const key in env) {
         if (env.hasOwnProperty(key)) {
-          command = `${key}=${env[key]} ${command}`;
+          command = `${key}="${env[key]}" ${command}`;
         }
       }
       logger('COMMAND', command)
@@ -903,7 +903,7 @@ export class GoLogin {
       let command = `${ORBITA_BROWSER} ${params.join(' ')}`
       for (const key in env) {
         if (env.hasOwnProperty(key)) {
-          command = `${key}=${env[key]} ${command}`;
+          command = `${key}="${env[key]}" ${command}`;
         }
       }
       logger('SPAWN CMD', command);
